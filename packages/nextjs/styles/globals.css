@@ -41,22 +41,22 @@
 @plugin "daisyui/theme" {
   name: "dark";
 
-  --color-primary: #212638;
-  --color-primary-content: #f9fbff;
-  --color-secondary: #323f61;
-  --color-secondary-content: #f9fbff;
-  --color-accent: #4969a6;
-  --color-accent-content: #f9fbff;
-  --color-neutral: #f9fbff;
-  --color-neutral-content: #385183;
-  --color-base-100: #385183;
-  --color-base-200: #2a3655;
-  --color-base-300: #212638;
-  --color-base-content: #f9fbff;
-  --color-info: #385183;
-  --color-success: #34eeb6;
-  --color-warning: #ffcf72;
-  --color-error: #ff8863;
+  --color-primary: #00FF8C;
+  --color-primary-content: #000000;
+  --color-secondary: #004D29;
+  --color-secondary-content: #FFFFFF;
+  --color-accent: #00FF8C;
+  --color-accent-content: #000000;
+  --color-neutral: #2D2D2D;
+  --color-neutral-content: #FFFFFF;
+  --color-base-100: #000000;
+  --color-base-200: #111111;
+  --color-base-300: #2D2D2D;
+  --color-base-content: #FFFFFF;
+  --color-info: #00FF8C;
+  --color-success: #00FF8C;
+  --color-warning: #FFB800;
+  --color-error: #FF4141;
 
   --radius-field: 9999rem;
   --radius-box: 1rem;
