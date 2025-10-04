@@ -1,114 +1,270 @@
-# 🏗 Scaffold-ETH 2 with Hardhat + Monad Testnet Configuration 
+# FIplikci
 
-<h4 align="center">
-  <a href="https://docs.scaffoldeth.io">Documentation</a> |
-  <a href="https://scaffoldeth.io">Website</a>
-</h4>
+A simple lending protocol built for the Monad network. This is a hackathon project designed for speed and simplicity.
 
-🧪 An open-source, up-to-date toolkit for building decentralized applications (dapps) on the Ethereum blockchain. It's designed to make it easier for developers to create and deploy smart contracts and build user interfaces that interact with those contracts.
+## Features
 
-⚙️ Built using NextJS, RainbowKit, Hardhat, Wagmi, Viem, and Typescript.
+### 🏦 Core Functionality
 
-- ✅ **Contract Hot Reload**: Your frontend auto-adapts to your smart contract as you edit it.
-- 🪝 **[Custom hooks](https://docs.scaffoldeth.io/hooks/)**: Collection of React hooks wrapper around [wagmi](https://wagmi.sh/) to simplify interactions with smart contracts with typescript autocompletion.
-- 🧱 [**Components**](https://docs.scaffoldeth.io/components/): Collection of common web3 components to quickly build your frontend.
-- 🔥 **Burner Wallet & Local Faucet**: Quickly test your application with a burner wallet and local faucet.
-- 🔐 **Integration with Wallet Providers**: Connect to different wallet providers and interact with the Ethereum network.
+- **Supply MON**: Deposit MON tokens to earn 8% APY
+- **Withdraw MON**: Withdraw your supplied MON plus earned interest anytime
+- **Borrow MON**: Borrow MON by providing 120% collateral
+- **Repay Loan**: Repay your loan to get your collateral back
 
-![Debug Contracts tab](https://github.com/scaffold-eth/scaffold-eth-2/assets/55535804/b237af0c-5027-4849-a5c1-2e31495cccb1)
+### 📊 Key Parameters
 
-## Requirements
+- **Supply APY**: 8% (800 basis points)
+- **Collateral Ratio**: 120% (12000 basis points)
+- **Borrow Fee**: 10% (1000 basis points) - one-time upfront fee
 
-Before you begin, you need to install the following tools:
+### 🎯 Credit Score System
 
-- [Node (>= v20.18.3)](https://nodejs.org/en/download/)
-- Yarn ([v1](https://classic.yarnpkg.com/en/docs/install/) or [v2+](https://yarnpkg.com/getting-started/install))
-- [Git](https://git-scm.com/downloads)
+- Earn +1 credit score for each supply
+- Earn +2 credit score for each loan repayment
+- Credit scores are tracked on-chain and visible in the UI
 
-## Quickstart
+### ⚡ Simplicity
 
-To get started with Scaffold-ETH 2, follow the steps below:
+- **No liquidation mechanism** - simplified for hackathon speed
+- **No position health tracking** - users manage their own positions
+- **Single active loan per user** - one borrow position at a time
+- **Instant transactions** - no waiting periods
 
-1. Install dependencies if it was skipped in CLI:
+## Smart Contract
 
+### Contract: `IplikciFinance.sol`
+
+**Location**: `packages/hardhat/contracts/IplikciFinance.sol`
+
+**Deployed Address** (localhost): `0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0`
+
+### Main Functions
+
+#### Supply Functions
+
+```solidity
+// Supply MON to the protocol
+function supplyMon() public payable
+
+// Withdraw MON from the protocol
+function withdrawMon(uint256 amount) public
+
+// Calculate earned interest
+function calculateEarned(address user) public view returns (uint256)
 ```
-cd my-dapp-example
+
+#### Borrow Functions
+
+```solidity
+// Borrow MON by providing collateral
+function borrowMon(uint256 borrowAmount) public payable
+
+// Repay loan and get collateral back
+function repayMon() public payable
+```
+
+#### View Functions
+
+```solidity
+function getSupplyPosition(address user) public view returns (uint256 amount, uint256 earned, uint256 timestamp)
+function getBorrowPosition(address user) public view returns (uint256 collateral, uint256 borrowed, uint256 timestamp)
+function supplyMonApy() public view returns (uint256)
+function borrowMonFeeRate() public view returns (uint256)
+```
+
+#### Admin Functions (Owner Only)
+
+```solidity
+function setSupplyMonEarnBps(uint256 newRate) public onlyOwner
+function setBorrowMonCollateralBps(uint256 newRate) public onlyOwner
+function setBorrowMonFeeBps(uint256 newRate) public onlyOwner
+function emergencyWithdraw() public onlyOwner
+```
+
+## Frontend UI
+
+### Main Features
+
+1. **Dashboard View**
+   - Real-time display of Supply APY, Borrow Fee Rate, and Credit Score
+   - User's supply position with earned interest
+   - User's borrow position with collateral info
+
+2. **Supply Section**
+   - Input field to supply MON
+   - Input field to withdraw MON
+   - Real-time balance updates
+
+3. **Borrow Section**
+   - Input field for borrow amount
+   - Input field for collateral (shows required amount)
+   - Repay button when loan is active
+   - Automatic collateral calculation
+
+4. **Info Section**
+   - Clear explanation of how the protocol works
+   - Key metrics and parameters
+
+## Development Setup
+
+### Prerequisites
+
+- Node.js 18+
+- Yarn
+- Git
+
+### Installation
+
+1. Clone the repository
+2. Install dependencies:
+
+```bash
 yarn install
 ```
 
-2. Run a local network in the first terminal:
+### Running Locally
 
-```
+1. **Start the local blockchain**:
+
+```bash
 yarn chain
 ```
 
-This command starts a local Ethereum network using Hardhat. The network runs on your local machine and can be used for testing and development. You can customize the network configuration in `packages/hardhat/hardhat.config.ts`.
+2. **Deploy the contracts** (in a new terminal):
 
-3. On a second terminal, deploy the test contract:
-
-```
+```bash
 yarn deploy
 ```
 
-This command deploys a test smart contract to the local network. The contract is located in `packages/hardhat/contracts` and can be modified to suit your needs. The `yarn deploy` command uses the deploy script located in `packages/hardhat/deploy` to deploy the contract to the network. You can also customize the deploy script.
+3. **Start the frontend** (in a new terminal):
 
-4. On a third terminal, start your NextJS app:
-
-```
+```bash
 yarn start
 ```
 
-Visit your app on: `http://localhost:3000`. You can interact with your smart contract using the `Debug Contracts` page. You can tweak the app config in `packages/nextjs/scaffold.config.ts`.
+4. **Open the app**:
+   - Navigate to `http://localhost:3000`
+   - Click "Launch App" or go directly to `http://localhost:3000/iplikci-finance`
 
-Run smart contract test with `yarn hardhat:test`
+### Testing
 
-- Edit your smart contracts in `packages/hardhat/contracts`
-- Edit your frontend homepage at `packages/nextjs/app/page.tsx`. For guidance on [routing](https://nextjs.org/docs/app/building-your-application/routing/defining-routes) and configuring [pages/layouts](https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts) checkout the Next.js documentation.
-- Edit your deployment scripts in `packages/hardhat/deploy`
+Run the comprehensive test suite:
 
-
-## Contract Verification
-
-After deploying your smart contract to a testnet or mainnet, you can verify it on block explorers like Etherscan or Sourcify. This makes your contract source code publicly available and allows users to interact with it through the block explorer.
-
-### Sourcify Verification (Recommended)
-
-Scaffold-ETH 2 is configured to use Sourcify for contract verification by default. Sourcify is a decentralized verification platform that supports multiple block explorers.
-
-#### For Monad Testnet
-
-1. Deploy your contract to Monad testnet:
 ```bash
-yarn deploy --network monadTestnet
+cd packages/hardhat
+yarn test test/IplikciFinance.ts
 ```
 
-2. Verify your contract using the hardhat-deploy plugin:
-```bash
-yarn hardhat-verify --network monadTestnet <CONTRACT_ADDRESS>
-```
+All 10 tests should pass:
 
-Replace `<CONTRACT_ADDRESS>` with the address of your deployed contract.
+- ✅ Deployment tests
+- ✅ Supply functionality tests
+- ✅ Borrow functionality tests
+- ✅ Admin functions tests
 
-#### Configuration
+## Usage Examples
 
-The Sourcify configuration is already set up in `packages/hardhat/hardhat.config.ts`:
+### Supply MON
 
-```typescript
-sourcify: {
-  enabled: true,
-  apiUrl: "https://sourcify-api-monad.blockvision.org",
-  browserUrl: "https://testnet.monadexplorer.com",
-},
-```
+1. Connect your wallet
+2. Navigate to FIplikci page
+3. Enter amount in "Amount to Supply" field
+4. Click "Supply MON"
+5. Confirm transaction
+6. Your position will update with earned interest
 
-## Documentation
+### Borrow MON
 
-Visit our [docs](https://docs.scaffoldeth.io) to learn how to start building with Scaffold-ETH 2.
+1. Connect your wallet
+2. Navigate to FIplikci page
+3. Enter desired borrow amount
+4. Enter collateral amount (must be at least 120% of borrow amount)
+5. Click "Borrow MON"
+6. Confirm transaction
+7. You'll receive borrowed amount minus 10% fee
 
-To know more about its features, check out our [website](https://scaffoldeth.io).
+### Repay Loan
 
-## Contributing to Scaffold-ETH 2
+1. Navigate to FIplikci page
+2. If you have an active loan, you'll see "Repay Full Loan" button
+3. Click the button
+4. Confirm transaction with the full loan amount
+5. Your collateral will be returned
 
-We welcome contributions to Scaffold-ETH 2!
+## Architecture
 
-Please see [CONTRIBUTING.MD](https://github.com/scaffold-eth/scaffold-eth-2/blob/main/CONTRIBUTING.md) for more information and guidelines for contributing to Scaffold-ETH 2.
+### Smart Contract Architecture
+
+- Built with Solidity 0.8.20
+- Uses OpenZeppelin's Ownable for access control
+- Simple interest calculation for earnings
+- Struct-based position tracking
+- Event emission for all state changes
+
+### Frontend Architecture
+
+- Next.js 14 with App Router
+- TypeScript for type safety
+- Scaffold-ETH 2 hooks for blockchain interaction
+- TailwindCSS + DaisyUI for styling
+- Real-time contract data fetching with wagmi hooks
+
+### Key Technologies
+
+- **Smart Contracts**: Hardhat, Solidity, OpenZeppelin
+- **Frontend**: Next.js, React, TypeScript
+- **Blockchain Interaction**: Wagmi, Viem, RainbowKit
+- **Testing**: Chai, Hardhat Test Environment
+
+## Security Considerations
+
+⚠️ **This is a hackathon project and NOT production-ready!**
+
+Known limitations:
+
+- No liquidation mechanism (users can be under-collateralized)
+- No position health monitoring
+- No oracle for price feeds
+- Simple interest calculation (not compound)
+- Single admin with emergency withdraw capability
+- No pause mechanism
+- No time locks on admin functions
+
+## Gas Costs
+
+Based on test runs:
+
+- Deploy: ~957,751 gas
+- Supply: ~95,064 - 112,164 gas
+- Withdraw: ~48,649 gas
+- Borrow: ~123,865 gas
+- Repay: ~44,899 gas
+
+## Future Enhancements (Post-Hackathon)
+
+- [ ] Add liquidation mechanism
+- [ ] Implement position health monitoring
+- [ ] Add compound interest calculation
+- [ ] Multiple loan support per user
+- [ ] Variable interest rates based on utilization
+- [ ] Support for multiple collateral types
+- [ ] Oracle integration for price feeds
+- [ ] Governance token for protocol control
+- [ ] Time locks and emergency pause functionality
+- [ ] Advanced analytics dashboard
+
+## License
+
+MIT License
+
+## Contributing
+
+This is a hackathon project. Feel free to fork and improve!
+
+## Contact
+
+For questions or suggestions, please open an issue.
+
+---
+
+Built with ❤️ for Monad Blitz Hackathon
