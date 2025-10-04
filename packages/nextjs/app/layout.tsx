@@ -4,9 +4,9 @@ import { ThemeProvider } from "~~/components/ThemeProvider";
 import "~~/styles/globals.css";
 import { getMetadata } from "~~/utils/scaffold-eth/getMetadata";
 
-export const metadata = getMetadata({ 
-  title: "İplikçi Finance | Multi-Asset Lending Protocol", 
-  description: "Built on Monad Blockchain - Dark Theme with Glassmorphism Design" 
+export const metadata = getMetadata({
+  title: "FIplikci | Multi-Asset Lending Protocol",
+  description: "Built on Monad Blockchain - Dark Theme with Glassmorphism Design",
 });
 
 const ScaffoldEthApp = ({ children }: { children: React.ReactNode }) => {

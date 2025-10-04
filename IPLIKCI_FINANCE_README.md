@@ -1,4 +1,4 @@
-# İplikçi Finance
+# FIplikci
 
 A simple lending protocol built for the MON network. This is a hackathon project designed for speed and simplicity.
 
@@ -152,7 +152,7 @@ All 10 tests should pass:
 ### Supply MON
 
 1. Connect your wallet
-2. Navigate to İplikçi Finance page
+2. Navigate to FIplikci page
 3. Enter amount in "Amount to Supply" field
 4. Click "Supply MON"
 5. Confirm transaction
@@ -161,7 +161,7 @@ All 10 tests should pass:
 ### Borrow MON
 
 1. Connect your wallet
-2. Navigate to İplikçi Finance page
+2. Navigate to FIplikci page
 3. Enter desired borrow amount
 4. Enter collateral amount (must be at least 120% of borrow amount)
 5. Click "Borrow MON"
@@ -170,7 +170,7 @@ All 10 tests should pass:
 
 ### Repay Loan
 
-1. Navigate to İplikçi Finance page
+1. Navigate to FIplikci page
 2. If you have an active loan, you'll see "Repay Full Loan" button
 3. Click the button
 4. Confirm transaction with the full loan amount

@@ -18,11 +18,11 @@ const HeroSection: React.FC = () => {
         </div> */}
 
         <div className="fixed opacity-20 z-0 top-[-50px]">
-          <img src="/iplikci-logo.png" alt="İplikçi Finance" className="h-[800px]" />
+          <img src="/iplikci-logo.png" alt="FIplikci" className="h-[800px]" />
         </div>
 
         <div className="text-right max-w-4xl mx-auto z-10">
-          <div className="text-4xl font-light mb-3 text-gray-400">İplikçi Finance</div>
+          <div className="text-4xl font-light mb-3 text-gray-400">FIplikci</div>
           <h1 className="text-7xl font-bold mb-6">
             TRUST-BASED
             <br />

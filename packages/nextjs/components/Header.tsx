@@ -26,7 +26,7 @@ export const menuLinks: HeaderMenuLink[] = [
     icon: <BugAntIcon className="h-4 w-4" />,
   },
   {
-    label: "İplikçi Finance",
+    label: "FIplikci",
     href: "/iplikci-finance",
     icon: <BugAntIcon className="h-4 w-4" />,
   },

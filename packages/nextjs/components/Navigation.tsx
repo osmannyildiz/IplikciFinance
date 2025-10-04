@@ -27,7 +27,7 @@ const Navigation: React.FC = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center">
-            <img src="/iplikci-logo.png" alt="İplikçi Finance" className="h-12" />
+            <img src="/iplikci-logo.png" alt="FIplikci" className="h-12" />
           </Link>
 
           {/* Navigation Links */}
