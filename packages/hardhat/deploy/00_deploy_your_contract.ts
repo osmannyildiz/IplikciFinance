@@ -36,6 +36,26 @@ const deployIplikciFinance: DeployFunction = async function (hre: HardhatRuntime
   console.log("💰 IplikciFinance deployed!");
   console.log("📊 Supply APY:", await iplikciFinance.supplyMonEarnBps(), "bps (basis points)");
   console.log("💳 Borrow Fee Rate:", await iplikciFinance.borrowMonFeeBps(), "bps (basis points)");
+
+  // Deploy Mock WBTC
+  await deploy("MockWBTC", {
+    from: deployer,
+    args: [],
+    log: true,
+    autoMine: true,
+  });
+
+  console.log("🪙 MockWBTC deployed!");
+
+  // Deploy Mock USDC
+  await deploy("MockUSDC", {
+    from: deployer,
+    args: [],
+    log: true,
+    autoMine: true,
+  });
+
+  console.log("💵 MockUSDC deployed!");
 };
 
 export default deployIplikciFinance;
