@@ -1,5 +1,9 @@
 # FIplikci
 
+> Live on Monad Testnet.
+> Contract: [0x4E472Ed61dc0434614Ab8779064C68138C7459A4](https://testnet.monadexplorer.com/address/0x4E472Ed61dc0434614Ab8779064C68138C7459A4)
+> Demo: [fiplikci.osmannyildiz.cc](https://fiplikci.osmannyildiz.cc)
+
 A simple lending protocol built for the Monad network. This is a hackathon project designed for speed and simplicity.
 
 ## Features

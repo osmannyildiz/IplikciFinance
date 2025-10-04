@@ -14,7 +14,7 @@ contract IplikciFinance is Ownable {
 
     // Rate parameters (in basis points, 10000 = 100%)
     uint256 public supplyEarnBps = 800; // 8% APY for suppliers
-    uint256 public borrowCollateralBps = 12000; // 120% collateral required
+    uint256 public borrowCollateralBps = 12000; // 120% collateral required // TODO: This will be made dynamic
     uint256 public borrowFeeBps = 1000; // 10% fee on borrowed amount
 
     // Fixed prices in USD (with 18 decimals for precision)
