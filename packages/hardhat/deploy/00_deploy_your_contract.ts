@@ -21,31 +21,15 @@ const deployIplikciFinance: DeployFunction = async function (hre: HardhatRuntime
   const { deployer } = await hre.getNamedAccounts();
   const { deploy } = hre.deployments;
 
-  await deploy("IplikciFinance", {
-    from: deployer,
-    // Contract constructor arguments (none for IplikciFinance)
-    args: [],
-    log: true,
-    // autoMine: can be passed to the deploy function to make the deployment process faster on local networks by
-    // automatically mining the contract deployment transaction. There is no effect on live networks.
-    autoMine: true,
-  });
-
-  // Get the deployed contract to interact with it after deploying.
-  const iplikciFinance = await hre.ethers.getContract<Contract>("IplikciFinance", deployer);
-  console.log("💰 IplikciFinance deployed!");
-  console.log("📊 Supply APY:", await iplikciFinance.supplyMonEarnBps(), "bps (basis points)");
-  console.log("💳 Borrow Fee Rate:", await iplikciFinance.borrowMonFeeBps(), "bps (basis points)");
-
-  // Deploy Mock WBTC
+  // Deploy Mock WBTC first
   await deploy("MockWBTC", {
     from: deployer,
     args: [],
     log: true,
     autoMine: true,
   });
-
-  console.log("🪙 MockWBTC deployed!");
+  const mockWBTC = await hre.ethers.getContract<Contract>("MockWBTC", deployer);
+  console.log("🪙 MockWBTC deployed at:", await mockWBTC.getAddress());
 
   // Deploy Mock USDC
   await deploy("MockUSDC", {
@@ -54,8 +38,21 @@ const deployIplikciFinance: DeployFunction = async function (hre: HardhatRuntime
     log: true,
     autoMine: true,
   });
+  const mockUSDC = await hre.ethers.getContract<Contract>("MockUSDC", deployer);
+  console.log("💵 MockUSDC deployed at:", await mockUSDC.getAddress());
 
-  console.log("💵 MockUSDC deployed!");
+  // Deploy IplikciFinance with token addresses
+  await deploy("IplikciFinance", {
+    from: deployer,
+    args: [await mockWBTC.getAddress(), await mockUSDC.getAddress()],
+    log: true,
+    autoMine: true,
+  });
+
+  const iplikciFinance = await hre.ethers.getContract<Contract>("IplikciFinance", deployer);
+  console.log("💰 IplikciFinance deployed!");
+  console.log("📊 Supply APY:", await iplikciFinance.supplyEarnBps(), "bps (basis points)");
+  console.log("💳 Borrow Fee Rate:", await iplikciFinance.borrowFeeBps(), "bps (basis points)");
 };
 
 export default deployIplikciFinance;

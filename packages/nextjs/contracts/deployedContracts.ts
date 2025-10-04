@@ -7,10 +7,21 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   31337: {
     IplikciFinance: {
-      address: "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
+      address: "0x0165878A594ca255338adfa4d48449f69242Eb8F",
       abi: [
         {
-          inputs: [],
+          inputs: [
+            {
+              internalType: "address",
+              name: "_wbtc",
+              type: "address",
+            },
+            {
+              internalType: "address",
+              name: "_usdc",
+              type: "address",
+            },
+          ],
           stateMutability: "nonpayable",
           type: "constructor",
         },
@@ -47,6 +58,18 @@ const deployedContracts = {
             },
             {
               indexed: false,
+              internalType: "enum IplikciFinance.Asset",
+              name: "borrowAsset",
+              type: "uint8",
+            },
+            {
+              indexed: false,
+              internalType: "enum IplikciFinance.Asset",
+              name: "collateralAsset",
+              type: "uint8",
+            },
+            {
+              indexed: false,
               internalType: "uint256",
               name: "collateral",
               type: "uint256",
@@ -64,7 +87,7 @@ const deployedContracts = {
               type: "uint256",
             },
           ],
-          name: "MonBorrowed",
+          name: "AssetBorrowed",
           type: "event",
         },
         {
@@ -75,6 +98,12 @@ const deployedContracts = {
               internalType: "address",
               name: "user",
               type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "enum IplikciFinance.Asset",
+              name: "asset",
+              type: "uint8",
             },
             {
               indexed: false,
@@ -89,7 +118,7 @@ const deployedContracts = {
               type: "uint256",
             },
           ],
-          name: "MonRepaid",
+          name: "AssetSupplied",
           type: "event",
         },
         {
@@ -103,28 +132,9 @@ const deployedContracts = {
             },
             {
               indexed: false,
-              internalType: "uint256",
-              name: "amount",
-              type: "uint256",
-            },
-            {
-              indexed: false,
-              internalType: "uint256",
-              name: "creditScore",
-              type: "uint256",
-            },
-          ],
-          name: "MonSupplied",
-          type: "event",
-        },
-        {
-          anonymous: false,
-          inputs: [
-            {
-              indexed: true,
-              internalType: "address",
-              name: "user",
-              type: "address",
+              internalType: "enum IplikciFinance.Asset",
+              name: "asset",
+              type: "uint8",
             },
             {
               indexed: false,
@@ -139,7 +149,32 @@ const deployedContracts = {
               type: "uint256",
             },
           ],
-          name: "MonWithdrawn",
+          name: "AssetWithdrawn",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "address",
+              name: "user",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "amount",
+              type: "uint256",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "creditScore",
+              type: "uint256",
+            },
+          ],
+          name: "LoanRepaid",
           type: "event",
         },
         {
@@ -164,19 +199,53 @@ const deployedContracts = {
         {
           inputs: [
             {
+              internalType: "enum IplikciFinance.Asset",
+              name: "",
+              type: "uint8",
+            },
+          ],
+          name: "assetPrices",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "enum IplikciFinance.Asset",
+              name: "borrowAsset",
+              type: "uint8",
+            },
+            {
               internalType: "uint256",
               name: "borrowAmount",
               type: "uint256",
             },
+            {
+              internalType: "enum IplikciFinance.Asset",
+              name: "collateralAsset",
+              type: "uint8",
+            },
+            {
+              internalType: "uint256",
+              name: "collateralAmount",
+              type: "uint256",
+            },
           ],
-          name: "borrowMon",
+          name: "borrow",
           outputs: [],
           stateMutability: "payable",
           type: "function",
         },
         {
           inputs: [],
-          name: "borrowMonCollateralBps",
+          name: "borrowCollateralBps",
           outputs: [
             {
               internalType: "uint256",
@@ -189,7 +258,7 @@ const deployedContracts = {
         },
         {
           inputs: [],
-          name: "borrowMonFeeBps",
+          name: "borrowFeeBps",
           outputs: [
             {
               internalType: "uint256",
@@ -210,6 +279,16 @@ const deployedContracts = {
           ],
           name: "borrowPositions",
           outputs: [
+            {
+              internalType: "enum IplikciFinance.Asset",
+              name: "borrowAsset",
+              type: "uint8",
+            },
+            {
+              internalType: "enum IplikciFinance.Asset",
+              name: "collateralAsset",
+              type: "uint8",
+            },
             {
               internalType: "uint256",
               name: "collateralAmount",
@@ -236,8 +315,42 @@ const deployedContracts = {
               name: "user",
               type: "address",
             },
+            {
+              internalType: "enum IplikciFinance.Asset",
+              name: "asset",
+              type: "uint8",
+            },
           ],
           name: "calculateEarned",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "amount",
+              type: "uint256",
+            },
+            {
+              internalType: "enum IplikciFinance.Asset",
+              name: "fromAsset",
+              type: "uint8",
+            },
+            {
+              internalType: "enum IplikciFinance.Asset",
+              name: "toAsset",
+              type: "uint8",
+            },
+          ],
+          name: "convertAssetValue",
           outputs: [
             {
               internalType: "uint256",
@@ -268,10 +381,41 @@ const deployedContracts = {
           type: "function",
         },
         {
-          inputs: [],
-          name: "emergencyWithdraw",
-          outputs: [],
-          stateMutability: "nonpayable",
+          inputs: [
+            {
+              internalType: "enum IplikciFinance.Asset",
+              name: "asset",
+              type: "uint8",
+            },
+          ],
+          name: "getAssetDecimals",
+          outputs: [
+            {
+              internalType: "uint8",
+              name: "",
+              type: "uint8",
+            },
+          ],
+          stateMutability: "pure",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "enum IplikciFinance.Asset",
+              name: "asset",
+              type: "uint8",
+            },
+          ],
+          name: "getAvailableLiquidity",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
           type: "function",
         },
         {
@@ -284,6 +428,16 @@ const deployedContracts = {
           ],
           name: "getBorrowPosition",
           outputs: [
+            {
+              internalType: "enum IplikciFinance.Asset",
+              name: "borrowAsset",
+              type: "uint8",
+            },
+            {
+              internalType: "enum IplikciFinance.Asset",
+              name: "collateralAsset",
+              type: "uint8",
+            },
             {
               internalType: "uint256",
               name: "collateral",
@@ -309,6 +463,11 @@ const deployedContracts = {
               internalType: "address",
               name: "user",
               type: "address",
+            },
+            {
+              internalType: "enum IplikciFinance.Asset",
+              name: "asset",
+              type: "uint8",
             },
           ],
           name: "getSupplyPosition",
@@ -354,7 +513,7 @@ const deployedContracts = {
         },
         {
           inputs: [],
-          name: "repayMon",
+          name: "repay",
           outputs: [],
           stateMutability: "payable",
           type: "function",
@@ -362,12 +521,17 @@ const deployedContracts = {
         {
           inputs: [
             {
+              internalType: "enum IplikciFinance.Asset",
+              name: "asset",
+              type: "uint8",
+            },
+            {
               internalType: "uint256",
-              name: "newRate",
+              name: "priceInUSD",
               type: "uint256",
             },
           ],
-          name: "setBorrowMonCollateralBps",
+          name: "setAssetPrice",
           outputs: [],
           stateMutability: "nonpayable",
           type: "function",
@@ -380,7 +544,7 @@ const deployedContracts = {
               type: "uint256",
             },
           ],
-          name: "setBorrowMonFeeBps",
+          name: "setBorrowCollateralBps",
           outputs: [],
           stateMutability: "nonpayable",
           type: "function",
@@ -393,21 +557,45 @@ const deployedContracts = {
               type: "uint256",
             },
           ],
-          name: "setSupplyMonEarnBps",
+          name: "setBorrowFeeBps",
           outputs: [],
           stateMutability: "nonpayable",
           type: "function",
         },
         {
-          inputs: [],
-          name: "supplyMon",
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "newRate",
+              type: "uint256",
+            },
+          ],
+          name: "setSupplyEarnBps",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "enum IplikciFinance.Asset",
+              name: "asset",
+              type: "uint8",
+            },
+            {
+              internalType: "uint256",
+              name: "amount",
+              type: "uint256",
+            },
+          ],
+          name: "supply",
           outputs: [],
           stateMutability: "payable",
           type: "function",
         },
         {
           inputs: [],
-          name: "supplyMonEarnBps",
+          name: "supplyEarnBps",
           outputs: [
             {
               internalType: "uint256",
@@ -424,6 +612,11 @@ const deployedContracts = {
               internalType: "address",
               name: "",
               type: "address",
+            },
+            {
+              internalType: "enum IplikciFinance.Asset",
+              name: "",
+              type: "uint8",
             },
           ],
           name: "supplyPositions",
@@ -443,7 +636,13 @@ const deployedContracts = {
           type: "function",
         },
         {
-          inputs: [],
+          inputs: [
+            {
+              internalType: "enum IplikciFinance.Asset",
+              name: "",
+              type: "uint8",
+            },
+          ],
           name: "totalBorrowed",
           outputs: [
             {
@@ -456,7 +655,13 @@ const deployedContracts = {
           type: "function",
         },
         {
-          inputs: [],
+          inputs: [
+            {
+              internalType: "enum IplikciFinance.Asset",
+              name: "",
+              type: "uint8",
+            },
+          ],
           name: "totalSupplied",
           outputs: [
             {
@@ -482,14 +687,45 @@ const deployedContracts = {
           type: "function",
         },
         {
+          inputs: [],
+          name: "usdcToken",
+          outputs: [
+            {
+              internalType: "contract IERC20",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "wbtcToken",
+          outputs: [
+            {
+              internalType: "contract IERC20",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
           inputs: [
+            {
+              internalType: "enum IplikciFinance.Asset",
+              name: "asset",
+              type: "uint8",
+            },
             {
               internalType: "uint256",
               name: "amount",
               type: "uint256",
             },
           ],
-          name: "withdrawMon",
+          name: "withdraw",
           outputs: [],
           stateMutability: "nonpayable",
           type: "function",

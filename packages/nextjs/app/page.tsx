@@ -33,13 +33,13 @@ const Home: NextPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-center">
               <div className="bg-base-200 p-4 rounded-xl">
                 <div className="text-3xl mb-2">💰</div>
-                <h3 className="font-bold">Supply & Earn</h3>
-                <p className="text-sm">Supply MON and earn 8% APY</p>
+                <h3 className="font-bold">Multi-Asset Supply</h3>
+                <p className="text-sm">Supply MON, WBTC, or USDC and earn 8% APY</p>
               </div>
               <div className="bg-base-200 p-4 rounded-xl">
                 <div className="text-3xl mb-2">💳</div>
-                <h3 className="font-bold">Borrow MON</h3>
-                <p className="text-sm">Borrow with 120% collateral</p>
+                <h3 className="font-bold">Flexible Borrowing</h3>
+                <p className="text-sm">Borrow any asset using another as collateral</p>
               </div>
               <div className="bg-base-200 p-4 rounded-xl">
                 <div className="text-3xl mb-2">📈</div>
@@ -49,7 +49,7 @@ const Home: NextPage = () => {
               <div className="bg-base-200 p-4 rounded-xl">
                 <div className="text-3xl mb-2">⚡</div>
                 <h3 className="font-bold">Simple & Fast</h3>
-                <p className="text-sm">No liquidation, instant transactions</p>
+                <p className="text-sm">Fixed prices, no liquidation, instant transactions</p>
               </div>
             </div>
           </div>
