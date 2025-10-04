@@ -1,10 +1,9 @@
-import React from 'react';
-import { useAccount } from 'wagmi';
-import { useScaffoldReadContract } from '~~/hooks/scaffold-eth';
-import HeroSection from '../components/HeroSection';
-import ProfileSection from '../components/ProfileSection';
-import PositionsSection from '../components/PositionsSection';
-import ActivityTable from '../components/ActivityTable';
+import React from "react";
+import ActivityTable from "../components/ActivityTable";
+import HeroSection from "../components/HeroSection";
+import PositionsSection from "../components/PositionsSection";
+import ProfileSection from "../components/ProfileSection";
+import { useAccount } from "wagmi";
 
 const Dashboard: React.FC = () => {
   const { address, isConnected } = useAccount();

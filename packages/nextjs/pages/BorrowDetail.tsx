@@ -1,22 +1,24 @@
-import React, { useState } from 'react';
-import { useParams } from 'next/navigation';
-import Link from 'next/link';
-import { useAccount } from 'wagmi';
-import { useScaffoldReadContract, useScaffoldWriteContract } from '~~/hooks/scaffold-eth';
-import { parseUnits, formatUnits } from 'viem';
+import React, { useState } from "react";
+import Link from "next/link";
+import { formatUnits, parseUnits } from "viem";
+import { useAccount } from "wagmi";
+import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 
-const BorrowDetail: React.FC = () => {
-  const { asset } = useParams();
+interface Props {
+  asset: string;
+}
+
+const BorrowDetail: React.FC<Props> = ({ asset }) => {
   const { address: connectedAddress } = useAccount();
-  const [borrowAmount, setBorrowAmount] = useState('');
+  const [borrowAmount, setBorrowAmount] = useState("");
   const [selectedCollateralAsset, setSelectedCollateralAsset] = useState<number>(0);
 
-  const assetSymbol = asset?.toUpperCase() || '';
-  
+  const assetSymbol = asset?.toUpperCase() || "";
+
   const assetData = {
-    'MON': { decimals: 18, icon: '🟡', name: 'MON', enum: 0 },
-    'WBTC': { decimals: 8, icon: '🟠', name: 'Wrapped Bitcoin', enum: 1 },
-    'USDC': { decimals: 6, icon: '🔵', name: 'USD Coin', enum: 2 },
+    MON: { decimals: 18, icon: "🟣", name: "MON", enum: 0 },
+    WBTC: { decimals: 8, icon: "🟠", name: "Wrapped Bitcoin", enum: 1 },
+    USDC: { decimals: 6, icon: "🔵", name: "USD Coin", enum: 2 },
   };
 
   const currentAsset = assetData[assetSymbol as keyof typeof assetData];
@@ -63,7 +65,7 @@ const BorrowDetail: React.FC = () => {
   };
 
   const formatAssetAmount = (amount: bigint | undefined, decimals: number) => {
-    if (!amount) return '0';
+    if (!amount) return "0";
     return parseFloat(formatUnits(amount, decimals)).toFixed(2);
   };
 
@@ -83,18 +85,18 @@ const BorrowDetail: React.FC = () => {
     try {
       const borrowAmt = parseAssetAmount(borrowAmount, currentAsset.decimals);
       const collateralInfo = getAssetInfoByEnum(selectedCollateralAsset);
-      
+
       if (!collateralInfo) return;
 
       // Write transaction here
-      console.log('Borrowing:', {
+      console.log("Borrowing:", {
         asset: currentAsset.enum,
         amount: borrowAmt,
         collateralAsset: selectedCollateralAsset,
         collateralAmount: finalRequiredCollateral,
       });
 
-      setBorrowAmount('');
+      setBorrowAmount("");
     } catch (e) {
       console.error("Error borrowing:", e);
     }
@@ -107,7 +109,7 @@ const BorrowDetail: React.FC = () => {
     <div className="pt-20 min-h-screen">
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Back button */}
-        <Link 
+        <Link
           href="/borrow"
           className="inline-flex items-center text-lime-400 hover:text-lime-300 mb-6 transition-colors duration-200"
         >
@@ -128,7 +130,7 @@ const BorrowDetail: React.FC = () => {
             {/* Left Side - Asset Info */}
             <div className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-2xl p-6">
               <h3 className="text-xl font-semibold text-white mb-6">Asset Information</h3>
-              
+
               <div className="space-y-4">
                 <div className="flex items-center justify-between py-3 px-4 bg-gray-800/50 rounded-lg border border-gray-700">
                   <span className="text-gray-400">Asset</span>
@@ -172,19 +174,17 @@ const BorrowDetail: React.FC = () => {
             {/* Right Side - Borrow Form */}
             <div className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-2xl p-6">
               <h3 className="text-xl font-semibold text-white mb-6">Borrow {assetSymbol}</h3>
-              
+
               <div className="space-y-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-400 mb-2">
-                    Amount to Borrow
-                  </label>
+                  <label className="block text-sm font-medium text-gray-400 mb-2">Amount to Borrow</label>
                   <div className="relative">
                     <input
                       type="text"
                       placeholder="0.0"
                       className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:border-orange-500 focus:ring-1 focus:ring-orange-500 focus:outline-none transition-all duration-200"
                       value={borrowAmount}
-                      onChange={(e) => setBorrowAmount(e.target.value)}
+                      onChange={e => setBorrowAmount(e.target.value)}
                     />
                     <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
                       {assetSymbol}
@@ -193,15 +193,13 @@ const BorrowDetail: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-400 mb-2">
-                    Collateral Asset
-                  </label>
+                  <label className="block text-sm font-medium text-gray-400 mb-2">Collateral Asset</label>
                   <select
                     className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-lg text-white focus:border-orange-500 focus:ring-1 focus:ring-orange-500 focus:outline-none transition-all duration-200"
                     value={selectedCollateralAsset}
-                    onChange={(e) => setSelectedCollateralAsset(Number(e.target.value))}
+                    onChange={e => setSelectedCollateralAsset(Number(e.target.value))}
                   >
-                    {getCollateralOptions().map((asset) => (
+                    {getCollateralOptions().map(asset => (
                       <option key={asset.enum} value={asset.enum}>
                         {asset.icon} {asset.name} ({Object.keys(assetData)[asset.enum]})
                       </option>
@@ -217,15 +215,16 @@ const BorrowDetail: React.FC = () => {
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-lg font-bold text-orange-400">
-                        {formatAssetAmount(finalRequiredCollateral, getAssetInfoByEnum(selectedCollateralAsset)?.decimals || 18)}
+                        {formatAssetAmount(
+                          finalRequiredCollateral,
+                          getAssetInfoByEnum(selectedCollateralAsset)?.decimals || 18,
+                        )}
                       </span>
                       <span className="text-lg font-bold text-white">
                         {Object.keys(assetData)[selectedCollateralAsset]}
                       </span>
                     </div>
-                    <div className="text-xs text-gray-400 mt-2">
-                      Your collateral will be locked until repayment
-                    </div>
+                    <div className="text-xs text-gray-400 mt-2">Your collateral will be locked until repayment</div>
                   </div>
                 )}
 
@@ -233,15 +232,13 @@ const BorrowDetail: React.FC = () => {
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-sm text-gray-400">Borrow Fee</span>
                     <span className="text-sm text-orange-400">
-                      {borrowAmount && parseFloat(borrowAmount) > 0 
-                        ? (parseFloat(borrowAmount) * Number(borrowFeeRate || 0) / 10000).toFixed(6)
-                        : '0.00'
-                      } {assetSymbol}
+                      {borrowAmount && parseFloat(borrowAmount) > 0
+                        ? ((parseFloat(borrowAmount) * Number(borrowFeeRate || 0)) / 10000).toFixed(6)
+                        : "0.00"}{" "}
+                      {assetSymbol}
                     </span>
                   </div>
-                  <div className="text-xs text-gray-500">
-                    Fee is paid upfront and deducted from borrow amount
-                  </div>
+                  <div className="text-xs text-gray-500">Fee is paid upfront and deducted from borrow amount</div>
                 </div>
 
                 <button
@@ -249,14 +246,14 @@ const BorrowDetail: React.FC = () => {
                   onClick={handleBorrow}
                   disabled={!borrowAmount || parseFloat(borrowAmount) <= 0 || !finalRequiredCollateral}
                 >
-                  Borrow {borrowAmount || '0'} {assetSymbol}
+                  Borrow {borrowAmount || "0"} {assetSymbol}
                 </button>
 
                 <div className="text-sm text-gray-400 text-center">
                   <p className="mb-2">By borrowing, you agree to the protocol terms</p>
                   <p className="text-xs">
-                    • 120% collateralization required<br/>
-                    • Collateral locked until repayment
+                    • 120% collateralization required
+                    <br />• Collateral locked until repayment
                   </p>
                 </div>
               </div>
@@ -267,21 +264,27 @@ const BorrowDetail: React.FC = () => {
           <div className="max-w-2xl mx-auto">
             <div className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-2xl p-6">
               <h3 className="text-xl font-semibold text-white mb-6">Active Borrow Position</h3>
-              
+
               <div className="space-y-4 mb-6">
                 <div className="flex items-center justify-between py-3 px-4 bg-gray-800/50 rounded-lg border border-gray-700">
                   <span className="text-gray-400">Borrowed Amount</span>
                   <span className="text-white font-medium text-lg">
-                    {formatAssetAmount(borrowedAmount, Number(borrowPosition[0]) === 0 ? 18 : Number(borrowPosition[0]) === 1 ? 8 : 6)}
-                    {" "}{Object.keys(assetData)[Number(parsePosition[0])]}
+                    {formatAssetAmount(
+                      borrowedAmount,
+                      Number(borrowPosition?.[0]) === 0 ? 18 : Number(borrowPosition?.[0]) === 1 ? 8 : 6,
+                    )}{" "}
+                    {Object.keys(assetData)[Number(borrowPosition?.[0])]}
                   </span>
                 </div>
-                
+
                 <div className="flex items-center justify-between py-3 px-4 bg-gray-800/50 rounded-lg border border-gray-700">
                   <span className="text-gray-400">Collateral Locked</span>
                   <span className="text-orange-400 font-medium">
-                    {formatAssetAmount(borrowPosition[2], Number(borrowPosition[1]) === 0 ? 18 : Number(borrowPosition[1]) === 1 ? 8 : 6)}
-                    {" "}{Object.keys(assetData)[Number(borrowPosition[1])]}
+                    {formatAssetAmount(
+                      borrowPosition?.[2],
+                      Number(borrowPosition?.[1]) === 0 ? 18 : Number(borrowPosition?.[1]) === 1 ? 8 : 6,
+                    )}{" "}
+                    {Object.keys(assetData)[Number(borrowPosition?.[1])]}
                   </span>
                 </div>
               </div>

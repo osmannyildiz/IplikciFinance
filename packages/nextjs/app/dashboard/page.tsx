@@ -1,7 +1,7 @@
 "use client";
 
-import type { NextPage } from "next";
 import Dashboard from "../../pages/Dashboard";
+import type { NextPage } from "next";
 
 const DashboardPage: NextPage = () => {
   return <Dashboard />;

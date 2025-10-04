@@ -1,24 +1,24 @@
-import React from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { useAccount, useConnect, useDisconnect } from 'wagmi';
+import React from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { hardhat } from "viem/chains";
+// import { useAccount, useConnect, useDisconnect } from "wagmi";
 import { FaucetButton, RainbowKitCustomConnectButton } from "~~/components/scaffold-eth";
 import { useTargetNetwork } from "~~/hooks/scaffold-eth";
-import { hardhat } from "viem/chains";
 
 const Navigation: React.FC = () => {
   const pathname = usePathname();
-  const { address, isConnected } = useAccount();
-  const { connect, connectors } = useConnect();
-  const { disconnect } = useDisconnect();
+  // const { address, isConnected } = useAccount();
+  // const { connect, connectors } = useConnect();
+  // const { disconnect } = useDisconnect();
 
   const { targetNetwork } = useTargetNetwork();
   const isLocalNetwork = targetNetwork.id === hardhat.id;
 
   const navItems = [
-    { path: '/', label: 'Dashboard', icon: '📊' },
-    { path: '/supply', label: 'Supply', icon: '💰' },
-    { path: '/borrow', label: 'Borrow', icon: '💳' },
+    { path: "/", label: "Dashboard", icon: "📊" },
+    { path: "/supply", label: "Supply", icon: "💰" },
+    { path: "/borrow", label: "Borrow", icon: "💳" },
   ];
 
   return (
@@ -27,12 +27,12 @@ const Navigation: React.FC = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center">
-            <img src="/logo.svg" alt="İplikçi Finance" className="h-8" />
+            <img src="/iplikci-logo.png" alt="İplikçi Finance" className="h-12" />
           </Link>
 
           {/* Navigation Links */}
           <div className="hidden md:flex items-center space-x-1">
-            {navItems.map((item) => {
+            {navItems.map(item => {
               const isActive = pathname === item.path;
               return (
                 <Link
@@ -40,8 +40,8 @@ const Navigation: React.FC = () => {
                   href={item.path}
                   className={`px-4 py-2 rounded-lg transition-colors ${
                     isActive
-                      ? 'bg-monad-dark-green text-monad-green'
-                      : 'text-gray-400 hover:text-white hover:bg-monad-dark-gray'
+                      ? "bg-monad-dark-green text-monad-green"
+                      : "text-gray-400 hover:text-white hover:bg-monad-dark-gray"
                   }`}
                 >
                   <span>{item.label}</span>
@@ -80,8 +80,10 @@ const Navigation: React.FC = () => {
             )}
           </div> */}
 
-          <RainbowKitCustomConnectButton />
-          {isLocalNetwork && <FaucetButton />}
+          <div className="flex">
+            <RainbowKitCustomConnectButton />
+            {isLocalNetwork && <FaucetButton />}
+          </div>
         </div>
       </div>
     </nav>

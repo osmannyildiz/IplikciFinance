@@ -1,7 +1,7 @@
-import React from 'react';
-import Link from 'next/link';
-import { useScaffoldReadContract } from '~~/hooks/scaffold-eth';
-import { formatUnits } from 'viem';
+import React from "react";
+import Link from "next/link";
+import { formatUnits } from "viem";
+import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 
 const Supply: React.FC = () => {
   // Get liquidity for all assets
@@ -29,35 +29,35 @@ const Supply: React.FC = () => {
   });
 
   const formatAssetAmount = (amount: bigint | undefined, decimals: number) => {
-    if (!amount) return '0';
+    if (!amount) return "0";
     return parseFloat(formatUnits(amount, decimals)).toFixed(2);
   };
 
   const assets = [
     {
-      name: 'MON',
-      symbol: 'MON',
+      name: "MON",
+      symbol: "MON",
       liquidity: monLiquidity,
       decimals: 18,
       apy: supplyApy,
-      icon: '🟡'
+      icon: "🟣",
     },
     {
-      name: 'Wrapped Bitcoin',
-      symbol: 'WBTC', 
+      name: "Wrapped Bitcoin",
+      symbol: "WBTC",
       liquidity: wbtcLiquidity,
       decimals: 8,
       apy: supplyApy,
-      icon: '🟠'
+      icon: "🟠",
     },
     {
-      name: 'USD Coin',
-      symbol: 'USDC',
+      name: "USD Coin",
+      symbol: "USDC",
       liquidity: usdcLiquidity,
       decimals: 6,
-      apy: supplyApy, 
-      icon: '🔵'
-    }
+      apy: supplyApy,
+      icon: "🔵",
+    },
   ];
 
   return (
@@ -75,15 +75,25 @@ const Supply: React.FC = () => {
             <table className="w-full">
               <thead className="bg-gray-800/50 border-b border-gray-800">
                 <tr>
-                  <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Asset</th>
-                  <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Market Size</th>
-                  <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Liquidity</th>
-                  <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">APY</th>
-                  <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Action</th>
+                  <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                    Asset
+                  </th>
+                  {/* <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                    Market Size
+                  </th> */}
+                  <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                    Liquidity
+                  </th>
+                  <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                    APY
+                  </th>
+                  <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                    Action
+                  </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-800">
-                {assets.map((asset) => (
+                {assets.map(asset => (
                   <tr key={asset.symbol} className="hover:bg-gray-800/50 transition-colors duration-200">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center space-x-3">
@@ -94,11 +104,15 @@ const Supply: React.FC = () => {
                         </div>
                       </div>
                     </td>
+                    {/* <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm text-white font-medium">
+                        ${formatAssetAmount(asset.liquidity, asset.decimals)}M
+                      </div>
+                    </td> */}
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-white font-medium">${formatAssetAmount(asset.liquidity, asset.decimals)}M</div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-white font-medium">{formatAssetAmount(asset.liquidity, asset.decimals)} {asset.symbol}</div>
+                      <div className="text-sm text-white font-medium">
+                        {formatAssetAmount(asset.liquidity, asset.decimals)} {asset.symbol}
+                      </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-lime-600/20 text-lime-400 border border-lime-600/30">
